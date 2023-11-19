@@ -71,11 +71,11 @@ pre #{error.stack} --}}
             </div>
           </div>
         </a> --}}
-        
-{{!--在你的路由中，你使用了 restaurants 這個名稱來傳遞資料給模板，但在模板中你卻使用了 restaurantsData 這個名稱來遍歷資料。這會導致在模板中無法正確訪問資料。 --}}
+
+        {{!--在你的路由中，你使用了 restaurants 這個名稱來傳遞資料給模板，但在模板中你卻使用了 restaurantsData 這個名稱來遍歷資料。這會導致在模板中無法正確訪問資料。 --}}
         {{#each restaurants}}
 
-        <a href="/rest/{{this.id}}" class="text-secondary">
+        {{!-- <a href="/restaurant/{{this.id}}" class="text-secondary"> --}}
           <div class="card mb-3">
             <img class="card-img-top" src="{{this.image}}" alt="梅子鰻蒲燒專賣店">
             <div class="card-body p-3">
@@ -91,9 +91,13 @@ pre #{error.stack} --}}
               </span>
 
             </div>
+            <div class="card-footer d-flex justify-content-end flex-wrap">
+              <a href="/restaurants/{{this._id}}"><button class="btn btn-link btn-sm">Details</button></a>
+            </div>
+
           </div>
-        </a>
-        {{/each}}
+
+          {{/each}}
 
       </div>
     </div>

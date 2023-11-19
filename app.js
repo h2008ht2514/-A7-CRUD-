@@ -101,25 +101,38 @@ app.post("/restaurants", (req, res) => {
 // ? 何時要{} 何時不用? return Todo.create({ name }) 
 
 
-app.get('/rest/:rest_id', (req, res) => {
-  console.log('req.params', req.params.rest_id)
-  // 現在已經可以從 req.params.rest_id 取得使用者當前想要讀取的編號（id），
-  // 現在只要把這部電影的資料從 restaurant.json 中篩選出來，再回傳到樣板引擎就可以了。
-  // const restOne =
-  // {
-  //   id: 1,
-  //   name: "Sababa 沙巴巴中東美食",
-  //   name_en: "Sababa Pita Bar",
-  //   category: "中東料理",
-  //   image: "https://assets-lighthouse.s3.amazonaws.com/uploads/image/file/5635/01.jpg",
-  //   location: "台北市羅斯福路三段 283 巷 17 號",
-  //   phone: "02 2363 8009",
-  //   google_map: "https://goo.gl/maps/BJdmLuVdDbw",
-  //   rating: 4.1,
-  //   description: "沙巴巴批塔是台灣第一家純手工批塔專賣店,只選用最新鮮的頂級原料,以及道地的中東家傳配方。"
-  const rest = restaurantsData.find(rest => rest.id.toString() === req.params.rest_id)
-  res.render('show', { rest: rest })
+app.get("/restaurants/:restaurantId", (req, res) => {
+  console.log('req.params', req.params)
+
+  const { restaurantId } = req.params
+  Restaurant.findById(restaurantId)
+    .lean()
+    .then((restaurantData) => res.render('show', (restaurantData)))
+    .catch(err => console.log(error))
+
 })
+
+
+// 之前的
+// app.get('/rest/:rest_id', (req, res) => {
+//   console.log('req.params', req.params.rest_id)
+//   // 現在已經可以從 req.params.rest_id 取得使用者當前想要讀取的編號（id），
+//   // 現在只要把這部電影的資料從 restaurant.json 中篩選出來，再回傳到樣板引擎就可以了。
+//   // const restOne =
+//   // {
+//   //   id: 1,
+//   //   name: "Sababa 沙巴巴中東美食",
+//   //   name_en: "Sababa Pita Bar",
+//   //   category: "中東料理",
+//   //   image: "https://assets-lighthouse.s3.amazonaws.com/uploads/image/file/5635/01.jpg",
+//   //   location: "台北市羅斯福路三段 283 巷 17 號",
+//   //   phone: "02 2363 8009",
+//   //   google_map: "https://goo.gl/maps/BJdmLuVdDbw",
+//   //   rating: 4.1,
+//   //   description: "沙巴巴批塔是台灣第一家純手工批塔專賣店,只選用最新鮮的頂級原料,以及道地的中東家傳配方。"
+//   const rest = restaurantsData.find(rest => rest.id.toString() === req.params.rest_id)
+//   res.render('show', { rest: rest })
+// })
 
 // function returnToRestaurantList() {
 //   window.location.href = "/"; // 重定向到餐厅列表页面
