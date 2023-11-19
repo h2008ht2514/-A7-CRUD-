@@ -34,9 +34,18 @@ pre #{error.stack} --}}
           </div>
         </div>
       </form>
+
+      {{!-- 新增餐廳create按鈕 --}}
+      <div class="text-end">
+        <a href="/restaurants/new"><button class="btn btn-primary">新增餐廳</button></a>
+      </div>
+
     </div>
   </div>
 </div>
+
+
+
 
 <!-- restaurant list -->
 <div class="container mt-5">
@@ -62,8 +71,9 @@ pre #{error.stack} --}}
             </div>
           </div>
         </a> --}}
-
-        {{#each rests}}
+        
+{{!--在你的路由中，你使用了 restaurants 這個名稱來傳遞資料給模板，但在模板中你卻使用了 restaurantsData 這個名稱來遍歷資料。這會導致在模板中無法正確訪問資料。 --}}
+        {{#each restaurants}}
 
         <a href="/rest/{{this.id}}" class="text-secondary">
           <div class="card mb-3">

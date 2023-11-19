@@ -16,3 +16,6 @@ const restaurantSchema = new Schema({
 })
 
 module.exports = mongoose.model('Restaurant', restaurantSchema)
+// 至於 r 是否需要大寫，這取決於你在 Restaurant.js 中導出的是什麼。
+// 在 Restaurant.js 中，你使用 module.exports = mongoose.model('Restaurant', restaurantSchema) 導出了一個名為 Restaurant 的模型，
+// 因此在引入時使用相同的名稱 Restaurant 是合適的。大小寫在這裡是敏感的，所以確保它和導出的名稱一致。
