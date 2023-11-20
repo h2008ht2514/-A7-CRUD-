@@ -30,12 +30,13 @@ pre #{error.stack} --}}
           <input type="text" name="keyword" class="form-control" placeholder="輸入餐廳、分類" aria-label="Restaurant Name..."
             value="{{keyword}}" aria-describedby="search-button">
           <div class="input-group-append">
-            <button class="btn btn-major" type="submit" id="search-button"><i class="fas fa-search"></i></button>
+            <button class="btn btn-major" type="submit" id="search-button">搜尋<i class="fas fa-search"></i></button>
           </div>
         </div>
       </form>
 
       {{!-- 新增餐廳create按鈕 --}}
+      {{!-- a element的href有加那個點是相對路徑的意思，這裡有沒有加那個點結果都是一樣的，所以不加也沒問題！ --}}
       <div class="text-end">
         <a href="/restaurants/new"><button class="btn btn-primary">新增餐廳</button></a>
       </div>
@@ -92,9 +93,34 @@ pre #{error.stack} --}}
 
             </div>
             <div class="card-footer d-flex justify-content-end flex-wrap">
+              <a href="/restaurants/{{this._id}}/edit"><button class="btn btn-link btn-sm">Edit</button></a>
               <a href="/restaurants/{{this._id}}"><button class="btn btn-link btn-sm">Details</button></a>
-            </div>
+              {{!-- <form action="/restaurants/{{this._id}}" method="POST">
+                <!-- 添加以下隱藏輸入欄位 -->
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit" class="btn btn-danger btn-sm text-white">刪除</button>
+              </form> --}}
 
+              {{!-- <form action="/restaurants/{{this._id}}" method="DELETE" onsubmit="return confirm('確定要刪除嗎？');">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit" class="btn btn-danger btn-sm text-white">刪除</button>
+              </form> --}}
+
+              {{!-- <form action="/restaurants/{{this._id}}?_method=DELETE" method="POST">
+                <button type="submit" class="btn btn-danger btn-sm text-white">delete</button>
+              </form> --}}
+
+              <form action="/restaurants/{{this._id}}?_method=DELETE" method="POST"
+                onsubmit="return confirm('確定要刪除嗎？');">
+                {{!-- <input type="hidden" name="_method" value="DELETE"> --}}
+                <button type="submit" class="btn btn-danger btn-sm text-white">刪除</button>
+              </form>
+
+              {{!-- <form method="POST" action="/resource?_method=DELETE">
+                <button type="submit">Delete resource</button>
+              </form> --}}
+
+            </div>
           </div>
 
           {{/each}}
