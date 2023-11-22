@@ -86,25 +86,75 @@ app.delete("/restaurants/:restaurantId", (req, res) => {
     .catch(err => console.log(error))
 })
 
-
-
+//gpt幫我改的
 app.get('/search', (req, res) => {
-  const keyword = req.query.keyword.trim().toLowerCase()
+  const keyword = req.query.keyword.trim().toLowerCase();
+
   if (!keyword) {
     return res.redirect("/");
   }
-  const filteredRests = restaurantsData.filter((item => {
-    return (item.name.toLowerCase().includes(keyword)
-      || item.category.toLowerCase().includes(keyword)
-    )
-  }))
 
-  if (filteredRests.length !== 0) {
-    res.render('index', { rests: filteredRests, keyword })
-  } else {
-    res.render('no-results', { keyword })
-  }
-})
+  Restaurant.find({
+    $or: [
+      { name: { $regex: keyword, $options: 'i' } }, // 不區分大小寫的模糊搜尋
+      { category: { $regex: keyword, $options: 'i' } }
+    ]
+  })
+    .lean()
+    .then(filteredRests => {
+      if (filteredRests.length !== 0) {
+        res.render('index', { restaurants: filteredRests, keyword });
+      } else {
+        res.render('no-results', { keyword });
+      }
+    })
+    .catch(err => console.log(err));
+});
+
+
+//--錯的--因為 Restaurant 是一個 MongoDB 的模型（Model），而不是一個 JavaScript 陣列，因此不能使用 filter 方法。相反，你應該使用模型提供的 find 方法來進行資料庫查詢。
+// app.get('/search', (req, res) => {
+//   const keyword = req.query.keyword.trim().toLowerCase()
+//   if (!keyword) {
+//     return res.redirect("/");
+//   }
+//   const filteredRests = Restaurant.filter((item => {
+//     return (item.name.toLowerCase().includes(keyword)
+//       || item.category.toLowerCase().includes(keyword)
+//     )
+//   }))
+
+//   if (filteredRests.length !== 0) {
+//     res.render('index', { rests: filteredRests, keyword })
+//   } else {
+//     res.render('no-results', { keyword })
+//   }
+// })
+
+// 搜尋特定餐廳 A5答案
+// app.get("/search", (req, res) => {
+//   if (!req.query.keywords) {
+//     res.redirect("/")
+//   }
+
+//   const keywords = req.query.keywords
+//   const keyword = req.query.keywords.trim().toLowerCase()
+
+//   Restaurant.find({})
+//     .lean()
+//     .then(restaurantsData => {
+//       const filterRestaurantsData = restaurantsData.filter(
+//         data =>
+//           data.name.toLowerCase().includes(keyword) ||
+//           data.category.includes(keyword)
+//       )
+//       res.render("index", { restaurantsData: filterRestaurantsData, keywords })
+//     })
+//     .catch(err => console.log(err))
+// })
+
+
+
 
 app.listen(port, () => {
   console.log(`Express is running on http://localhost:${port}`)
