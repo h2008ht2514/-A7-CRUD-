@@ -22,13 +22,7 @@ router.use('/', home)
 router.use('/restaurants', restaurants2)
 
 // 在此加入搜尋路由
-router.use('/search', restaurants2);
+// router.use('/search', restaurants2);
 
 // 匯出路由器
 module.exports = router;
-
-
-
-
-
-//

@@ -60,29 +60,30 @@ router.delete("/:restaurantId", (req, res) => {
 
 
 // Search restaurants
-router.get('/', (req, res) => {
-  const keyword = req.query.keyword.trim().toLowerCase();
+// router.get('/', (req, res) => {
+//   const keyword = req.query.keyword.trim().toLowerCase();
 
-  if (!keyword) {
-    return res.redirect("/");
-  }
+//   if (!keyword) {
+//     return res.redirect("/");
+//   }
 
-  Restaurant.find({
-    $or: [
-      { name: { $regex: keyword, $options: 'i' } }, // 不區分大小寫的模糊搜尋
-      { category: { $regex: keyword, $options: 'i' } }
-    ]
-  })
-    .lean()
-    .then(filteredRests => {
-      if (filteredRests.length !== 0) {
-        res.render('index', { restaurants: filteredRests, keyword });
-      } else {
-        res.render('no-results', { keyword });
-      }
-    })
-    .catch(err => console.log(err));
-});
+//   Restaurant.find({
+//     $or: [
+//       { name: { $regex: keyword, $options: 'i' } }, // 不區分大小寫的模糊搜尋
+//       { category: { $regex: keyword, $options: 'i' } }
+//     ]
+//   })
+//     .lean()
+//     .then(filteredRests => {
+//       if (filteredRests.length !== 0) {
+//         res.render('index', { restaurants: filteredRests, keyword });
+//       } else {
+//         res.render('no-results', { keyword });
+//       }
+//     })
+//     .catch(err => console.log(err));
+// });
+
 
 
 

@@ -1,13 +1,3 @@
-// 有了路由器之後，讓我們來封裝第一個路由模組 home，這支模組專門管理首頁。
-
-// 在這裡需要引用的檔案有：
-
-// Express 本身
-// 呼叫 Express 的路由器功能 - express.Router()
-// Restaurant model
-// 然後最後要匯出這個路由模組。
-// 中間的部分，直接把首頁的路由 GET / 搬進來即可，注意需要依前後文修改變數名稱，把 app.get 改成 router.get：
-
 // 引用 Express 與 Express 路由器
 const express = require('express')
 const router = express.Router()
@@ -18,11 +8,51 @@ const Restaurant = require('../../models/restaurant')
 router.get('/', (req, res) => {
   Restaurant.find({})
     .lean()
-    
     .then(restaurants => res.render('index', { restaurants }))
     .catch(err => console.log(err))
 })
 
+//search function
+// 對 name 屬性按字母順序進行排序
+// Search restaurants
+router.get('/search', (req, res) => {
+  const keyword = req.query.keyword.trim().toLowerCase();
+
+  if (!keyword) {
+    return res.redirect("/");
+  }
+
+  // 假設你有一個變數 sortType 用來標記排序方式
+  const sortType = req.query.sortType;
+  console.log("req.query", req.query)
+
+  if (sortType === 'AtoZ') {
+    // 如果按 A 到 Z 排序被選擇
+    res.render('index', { restaurants: sortedRestaurants, sortByAZ: true, keyword });
+  } else {
+    // 如果按 A 到 Z 排序未被選擇
+    res.render('index', { restaurants: restaurants, sortByAZ: false, keyword });
+  }
+
+  // 對 name 屬性按字母順序進行排序
+  Restaurant.find({
+    $or: [
+      { name: { $regex: keyword, $options: 'i' } },
+      { category: { $regex: keyword, $options: 'i' } }
+    ]
+  })
+    .collation({ locale: 'en', strength: 2 }) // 設定排序的collation，strength: 2表示不區分大小寫
+    .sort({ name: 1 }) // 1表示升序，-1表示降序
+    .lean()
+    .then(filteredRests => {
+      if (filteredRests.length !== 0) {
+        res.render('index', { restaurants: filteredRests, keyword });
+      } else {
+        res.render('no-results', { keyword });
+      }
+    })
+    .catch(err => console.log(err));
+});
 
 module.exports = router
 
