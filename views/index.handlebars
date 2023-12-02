@@ -43,25 +43,23 @@
           Sort
         </button>
         <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="/?sortType=az">A > Z</a></li>
-          <li><a class="dropdown-item" href="/?sortType=za">Z > A</a></li>
-          {{!-- <li><a class="dropdown-item" href="#">類別</a></li>
-          <li><a class="dropdown-item" href="#">地區</a></li> --}}
+          <li>
+            <a class="dropdown-item{{#if (eq sortType 'az')}} selected{{/if}}" href="/search?sortType=az">A to Z</a>
+          </li>
+
+          <li>
+            <a class="dropdown-item{{#if (eq sortType 'za')}} selected{{/if}}" href="/search?sortType=za">Z to A</a>
+          </li>
+          <!-- 其他選項 -->
+          <li>
+            <a class="dropdown-item{{#if (eq sortType 'category')}} selected{{/if}}" href="/?sortType=category">類型</a>
+          </li>
+
         </ul>
       </div>
     </div>
   </div>
 </div>
-
-{{!-- {{#if sortByAZ}}
-  {{#each sortedRestaurants}}
-    <!-- 這裡是你渲染每個餐廳的內容 -->
-  {{/each}}
-{{else}}
-  {{#each restaurants}}
-  <!-- 這裡是你渲染每個餐廳的內容 -->
-  {{/each}}
-{{/if}} --}}
 
 
 <!-- restaurant list -->
@@ -71,43 +69,54 @@
       <div class="row row-cols-sm-3">
         {{!-- helpers --}}
         {{#if sortByAZ}}
-          {{#each sortedRestaurants}}
-            <!-- 這裡是渲染每個餐廳的內容 -->
-          {{/each}}
-        {{else}}
-
-          {{!--在你的路由中，你使用了 restaurants 這個名稱來傳遞資料給模板，但在模板中你卻使用了 restaurantsData 這個名稱來遍歷資料。這會導致在模板中無法正確訪問資料。 --}}
-          {{#each restaurants}}
-          
-          {{!-- <a href="/restaurant/{{this.id}}" class="text-secondary"> --}}
-            <div class="card mb-3">
-              <img class="card-img-top" src="{{this.image}}" alt="梅子鰻蒲燒專賣店">
-              <div class="card-body p-3">
-                <h6 class="card-title mb-1">{{this.name}}</h6>
-          
-                <div class="restaurant-category mb-1">
-                  <i class="fas fa-utensils pr-2"></i> {{this.category}}
-                </div>
-          
-                <span class="badge rounded-pill bg-danger font-weight-normal">
-                  {{this.rating}}
-                  <i class="fas fa-star fa-xs"></i>
-                </span>
-          
-              </div>
-              <div class="card-footer d-flex justify-content-end flex-wrap">
-                <a href="/restaurants/{{this._id}}/edit"><button class="btn btn-link btn-sm">Edit</button></a>
-                <a href="/restaurants/{{this._id}}"><button class="btn btn-link btn-sm">Details</button></a>
-          
-                <form action="/restaurants/{{this._id}}?_method=DELETE" method="POST" onsubmit="return confirm('確定要刪除嗎？');">
-                  {{!-- <input type="hidden" name="_method" value="DELETE"> --}}
-                  <button type="submit" class="btn btn-danger btn-sm text-white">刪除</button>
-                </form>
-              </div>
+        {{#each restaurants}}
+        <!-- 這裡是渲染每個餐廳的內容 -->
+        <div class="card mb-3">
+          <img class="card-img-top" src="{{this.image}}" alt="{{this.name}}">
+          <div class="card-body p-3">
+            <h6 class="card-title mb-1">{{this.name}}</h6>
+            <div class="restaurant-category mb-1">
+              <i class="fas fa-utensils pr-2"></i> {{this.category}}
             </div>
-            {{/each}}
-            
-        {{/if}}     
+            <span class="badge rounded-pill bg-danger font-weight-normal">
+              {{this.rating}}
+              <i class="fas fa-star fa-xs"></i>
+            </span>
+          </div>
+          <div class="card-footer d-flex justify-content-end flex-wrap">
+            <a href="/restaurants/{{this._id}}/edit"><button class="btn btn-link btn-sm">Edit</button></a>
+            <a href="/restaurants/{{this._id}}"><button class="btn btn-link btn-sm">Details</button></a>
+            <form action="/restaurants/{{this._id}}?_method=DELETE" method="POST" onsubmit="return confirm('確定要刪除嗎？');">
+              <button type="submit" class="btn btn-danger btn-sm text-white">刪除</button>
+            </form>
+          </div>
+        </div>
+        {{/each}}
+        {{else}}
+        {{#each restaurants}}
+        <!-- 這裡是渲染每個餐廳的內容 -->
+        <div class="card mb-3">
+          <img class="card-img-top" src="{{this.image}}" alt="{{this.name}}">
+          <div class="card-body p-3">
+            <h6 class="card-title mb-1">{{this.name}}</h6>
+            <div class="restaurant-category mb-1">
+              <i class="fas fa-utensils pr-2"></i> {{this.category}}
+            </div>
+            <span class="badge rounded-pill bg-danger font-weight-normal">
+              {{this.rating}}
+              <i class="fas fa-star fa-xs"></i>
+            </span>
+          </div>
+          <div class="card-footer d-flex justify-content-end flex-wrap">
+            <a href="/restaurants/{{this._id}}/edit"><button class="btn btn-link btn-sm">Edit</button></a>
+            <a href="/restaurants/{{this._id}}"><button class="btn btn-link btn-sm">Details</button></a>
+            <form action="/restaurants/{{this._id}}?_method=DELETE" method="POST" onsubmit="return confirm('確定要刪除嗎？');">
+              <button type="submit" class="btn btn-danger btn-sm text-white">刪除</button>
+            </form>
+          </div>
+        </div>
+        {{/each}}
+        {{/if}}
       </div>
     </div>
   </div>
